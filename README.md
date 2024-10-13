@@ -21,7 +21,7 @@ If you are in an environment where asdf cannot be used, please install the neces
 asdf plugin add air
 asdf plugin add golang
 asdf plugin add golangci-lint
-asdf plugin add gotestsum
+asdf plugin add gotestsum https://github.com/araspro/asdf-gotestsum.git  
 asdf plugin add nodejs
 asdf plugin add swag
 ```
@@ -35,6 +35,8 @@ asdf install
 ```
 
 ### Start Development Environment
+
+** Need to Install gcc compiler in order to this work **
 
 #### backend
 
@@ -51,6 +53,8 @@ make serve-backend
 ```
 
 #### ui
+
+** Need to install Yarn first **
 
 ```bash
 make dep-ui-local
