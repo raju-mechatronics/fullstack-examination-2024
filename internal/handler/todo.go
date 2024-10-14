@@ -34,7 +34,7 @@ type CreateRequest struct {
 	Task string `json:"task" validate:"required"`
 }
 
-// @Summary	Create a new todo
+// Create @Summary	Create a new todo
 // @Tags		todos
 // @Accept		json
 // @Produce	json
@@ -76,7 +76,7 @@ type UpdateRequestPath struct {
 	ID int `param:"id" validate:"required"`
 }
 
-// @Summary	Update a todo
+// Update @Summary	Update a todo
 // @Tags		todos
 // @Accept		json
 // @Produce	json
@@ -111,7 +111,7 @@ type DeleteRequest struct {
 	ID int `param:"id" validate:"required"`
 }
 
-// @Summary	Delete a todo
+// Delete @Summary	Delete a todo
 // @Tags		todos
 // @Param		path	path	DeleteRequest	false	"path"
 // @Success	204
@@ -142,7 +142,7 @@ type FindRequest struct {
 	ID int `param:"id" validate:"required"`
 }
 
-// @Summary	Find a todo
+// Find @Summary	Find a todo
 // @Tags		todos
 // @Param		path	path		FindRequest	false	"path"
 // @Success	200		{object}	ResponseData{Data=model.Todo}
@@ -176,8 +176,9 @@ type FindAllRequest struct {
 	Order  string       `query:"order" validate:"omitempty,oneof=asc desc"`
 }
 
-// @Summary	Find all todos
+// FindAll @Summary	Find all todos
 // @Tags		todos
+// @Param		query	query	FindAllRequest	false	"query"
 // @Success	200	{object}	ResponseData{Data=[]model.Todo}
 // @Failure	500	{object}	ResponseError
 // @Router		/todos [get]
