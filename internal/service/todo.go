@@ -54,6 +54,11 @@ func (t *todo) Update(todoUpdate model.Todo) (*model.Todo, error) {
 	if todo.Status == "" {
 		todo.Status = currentTodo.Status
 	}
+
+	if todo.Priority <= 0 {
+		todo.Priority = currentTodo.Priority
+	}
+
 	if err := t.todoRepository.Update(todo); err != nil {
 		return nil, err
 	}
