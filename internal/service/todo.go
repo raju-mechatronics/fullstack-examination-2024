@@ -8,8 +8,8 @@ import (
 
 // Todo is the service for the todo endpoint.
 type Todo interface {
-	Create(task string) (*model.Todo, error)
-	Update(id int, task string, status model.Status) (*model.Todo, error)
+	Create(todo model.Todo) (*model.Todo, error)
+	Update(todo model.Todo) (*model.Todo, error)
 	Delete(id int) error
 	Find(id int) (*model.Todo, error)
 	FindAll(query *model.TodoQuery) ([]*model.Todo, error)
@@ -24,18 +24,26 @@ func NewTodo(r repository.Todo) Todo {
 	return &todo{r}
 }
 
-func (t *todo) Create(task string) (*model.Todo, error) {
-	todo := model.NewTodo(task)
-	if err := t.todoRepository.Create(todo); err != nil {
+func (t *todo) Create(todoCreate model.Todo) (*model.Todo, error) {
+	td := &model.Todo{
+		Task:     todoCreate.Task,
+		Priority: todoCreate.Priority,
+	}
+	if err := t.todoRepository.Create(td); err != nil {
 		return nil, err
 	}
-	return todo, nil
+	return td, nil
 }
 
-func (t *todo) Update(id int, task string, status model.Status) (*model.Todo, error) {
-	todo := model.NewUpdateTodo(id, task, status)
+func (t *todo) Update(todoUpdate model.Todo) (*model.Todo, error) {
+	todo := &model.Todo{
+		ID:       todoUpdate.ID,
+		Task:     todoUpdate.Task,
+		Priority: todoUpdate.Priority,
+		Status:   todoUpdate.Status,
+	}
 	// 現在の値を取得
-	currentTodo, err := t.Find(id)
+	currentTodo, err := t.Find(todo.ID)
 	if err != nil {
 		return nil, err
 	}
