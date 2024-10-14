@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -168,13 +169,34 @@ func (t *todoHandler) Find(c echo.Context) error {
 	return c.JSON(http.StatusOK, ResponseData{Data: res})
 }
 
+type FindAllRequest struct {
+	Status model.Status `query:"status" validate:"omitempty,oneof=created processing done"`
+	Task   string       `query:"task" validate:"omitempty"`
+	SortBy string       `query:"sortBy" validate:"omitempty,oneof=id task status created_at updated_at"`
+	Order  string       `query:"order" validate:"omitempty,oneof=asc desc"`
+}
+
 // @Summary	Find all todos
 // @Tags		todos
 // @Success	200	{object}	ResponseData{Data=[]model.Todo}
 // @Failure	500	{object}	ResponseError
 // @Router		/todos [get]
 func (t *todoHandler) FindAll(c echo.Context) error {
-	res, err := t.service.FindAll()
+
+	var req FindAllRequest
+
+	if err := t.MustBind(c, &req); err != nil {
+		return c.JSON(http.StatusBadRequest, ResponseError{Errors: []Error{{Code: errors.CodeBadRequest, Message: err.Error()}}})
+	}
+	fmt.Println("status", req.Status)
+
+	res, err := t.service.FindAll(&model.TodoQuery{
+		SortOrder: req.Order,
+		SortBy:    req.SortBy,
+		Status:    req.Status,
+		Task:      req.Task,
+	})
+
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError,
 			ResponseError{Errors: []Error{{Code: errors.CodeInternalServerError, Message: err.Error()}}})
