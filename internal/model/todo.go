@@ -46,3 +46,10 @@ var StatusMap = map[Status]bool{
 	Processing: true,
 	Done:       true,
 }
+
+type TodoQuery struct {
+	Task      string
+	Status    Status
+	SortBy    string
+	SortOrder string
+}
