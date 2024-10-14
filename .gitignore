@@ -27,5 +27,5 @@ logs
 
 .vscode/
 tmp
-
+.idea/
 dist/*
