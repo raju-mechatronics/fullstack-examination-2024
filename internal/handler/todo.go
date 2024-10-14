@@ -86,7 +86,7 @@ type UpdateRequestPath struct {
 // @Accept		json
 // @Produce	json
 // @Param		body	body		UpdateRequestBody	true	"body"
-// @Param		path	path		UpdateRequestPath	false	"path"
+// @Param		path	body		UpdateRequestPath	false	"path"
 // @Success	201		{object}	ResponseData{Data=model.Todo}
 // @Failure	400		{object}	ResponseError
 // @Failure	500		{object}	ResponseError
@@ -124,7 +124,7 @@ type DeleteRequest struct {
 
 // Delete @Summary	Delete a todo
 // @Tags		todos
-// @Param		path	path	DeleteRequest	false	"path"
+// @Param		path	body	DeleteRequest	false	"path"
 // @Success	204
 // @Failure	400	{object}	ResponseError
 // @Failure	404	{object}	ResponseError
@@ -155,7 +155,7 @@ type FindRequest struct {
 
 // Find @Summary	Find a todo
 // @Tags		todos
-// @Param		path	path		FindRequest	false	"path"
+// @Param		path	body		FindRequest	false	"path"
 // @Success	200		{object}	ResponseData{Data=model.Todo}
 // @Failure	400		{object}	ResponseError
 // @Failure	404		{object}	ResponseError

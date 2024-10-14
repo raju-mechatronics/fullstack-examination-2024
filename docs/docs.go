@@ -10,6 +10,9 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {},
+        "license": {
+            "name": "Apache 2.0"
+        },
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -51,7 +54,50 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Find all todos",
+                "parameters": [
+                    {
+                        "enum": [
+                            "asc",
+                            "desc"
+                        ],
+                        "type": "string",
+                        "name": "order",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "id",
+                            "task",
+                            "status",
+                            "created_at",
+                            "updated_at",
+                            "priority"
+                        ],
+                        "type": "string",
+                        "name": "sortBy",
+                        "in": "query"
+                    },
+                    {
+                        "enum": [
+                            "created",
+                            "processing",
+                            "done"
+                        ],
+                        "type": "string",
+                        "x-enum-varnames": [
+                            "Created",
+                            "Processing",
+                            "Done"
+                        ],
+                        "name": "status",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "name": "task",
+                        "in": "query"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -92,7 +138,6 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Create a new todo",
                 "parameters": [
                     {
                         "description": "json",
@@ -143,13 +188,14 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Find a todo",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "path",
+                        "name": "path",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/handler.FindRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -201,7 +247,6 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Update a todo",
                 "parameters": [
                     {
                         "description": "body",
@@ -213,10 +258,12 @@ const docTemplate = `{
                         }
                     },
                     {
-                        "type": "integer",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "path",
+                        "name": "path",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/handler.UpdateRequestPath"
+                        }
                     }
                 ],
                 "responses": {
@@ -256,13 +303,14 @@ const docTemplate = `{
                 "tags": [
                     "todos"
                 ],
-                "summary": "Delete a todo",
                 "parameters": [
                     {
-                        "type": "integer",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "path",
+                        "name": "path",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/handler.DeleteRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -298,8 +346,24 @@ const docTemplate = `{
                 "task"
             ],
             "properties": {
+                "priority": {
+                    "type": "integer",
+                    "maximum": 10,
+                    "minimum": 1
+                },
                 "task": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.DeleteRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -311,6 +375,17 @@ const docTemplate = `{
                 },
                 "message": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.FindRequest": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -337,11 +412,25 @@ const docTemplate = `{
         "handler.UpdateRequestBody": {
             "type": "object",
             "properties": {
+                "priority": {
+                    "type": "integer"
+                },
                 "status": {
                     "$ref": "#/definitions/model.Status"
                 },
                 "task": {
                     "type": "string"
+                }
+            }
+        },
+        "handler.UpdateRequestPath": {
+            "type": "object",
+            "required": [
+                "id"
+            ],
+            "properties": {
+                "id": {
+                    "type": "integer"
                 }
             }
         },
@@ -365,6 +454,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "id": {
+                    "type": "integer"
+                },
+                "priority": {
                     "type": "integer"
                 },
                 "status": {
