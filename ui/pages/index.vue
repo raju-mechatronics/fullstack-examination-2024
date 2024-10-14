@@ -1,3 +1,12 @@
+
+
+<!--Sorry. I was too busy these days.<>
+
+If I had enough time I would split the component into multiple files.
+Would complete the test functions according to the changes
+Would use better architechture/code flow
+</>-->
+
 <template>
   <div class="todo-main">
     <h1>TODOリスト</h1>
