@@ -33,7 +33,7 @@ func TestTodoHandler_Create(t *testing.T) {
 	require.NoError(t, err)
 	repository := repository.NewTodo(dbInstance)
 	service := service.NewTodo(repository)
-	handler := NewTodo(service)
+	handler := NewTodoHandler(service)
 
 	tests := []struct {
 		name       string
@@ -112,7 +112,7 @@ func TestTodoHandler_Update(t *testing.T) {
 	require.NoError(t, err)
 	repository := repository.NewTodo(dbInstance)
 	service := service.NewTodo(repository)
-	handler := NewTodo(service)
+	handler := NewTodoHandler(service)
 
 	tests := []struct {
 		name       string
@@ -210,7 +210,7 @@ func TestTodoHandler_Delete(t *testing.T) {
 	require.NoError(t, err)
 	repository := repository.NewTodo(dbInstance)
 	service := service.NewTodo(repository)
-	handler := NewTodo(service)
+	handler := NewTodoHandler(service)
 
 	tests := []struct {
 		name       string
@@ -283,7 +283,7 @@ func TestTodoHandler_Find(t *testing.T) {
 	require.NoError(t, err)
 	repository := repository.NewTodo(dbInstance)
 	service := service.NewTodo(repository)
-	handler := NewTodo(service)
+	handler := NewTodoHandler(service)
 
 	tests := []struct {
 		name       string

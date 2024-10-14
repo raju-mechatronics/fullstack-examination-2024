@@ -21,7 +21,7 @@ func Register(e *echo.Echo, db *gorm.DB) {
 	// Todo
 	repository := repository.NewTodo(db)
 	service := service.NewTodo(repository)
-	todoHandler := NewTodo(service)
+	todoHandler := NewTodoHandler(service)
 	todo := api.Group("/todos")
 	{
 		todo.POST("", todoHandler.Create)

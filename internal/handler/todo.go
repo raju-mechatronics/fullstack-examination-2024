@@ -23,8 +23,8 @@ type todoHandler struct {
 	service service.Todo
 }
 
-// NewTodo returns a new instance of the todo handler.
-func NewTodo(s service.Todo) TodoHandler {
+// NewTodoHandler returns a new instance of the todo handler.
+func NewTodoHandler(s service.Todo) TodoHandler {
 	return &todoHandler{service: s}
 }
 
