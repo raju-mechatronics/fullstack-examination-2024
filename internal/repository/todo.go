@@ -13,7 +13,7 @@ type Todo interface {
 	Delete(id int) error
 	Update(t *model.Todo) error
 	Find(id int) (*model.Todo, error)
-	FindAll() ([]*model.Todo, error)
+	FindAll(query *model.TodoQuery) ([]*model.Todo, error)
 }
 
 type todo struct {
@@ -65,11 +65,32 @@ func (td *todo) Find(id int) (*model.Todo, error) {
 	return todo, nil
 }
 
-func (td *todo) FindAll() ([]*model.Todo, error) {
+func (td *todo) FindAll(queryParams *model.TodoQuery) ([]*model.Todo, error) {
 	var todos []*model.Todo
-	err := td.db.Find(&todos).Error
+
+	query := td.db.Model(&model.Todo{})
+
+	if queryParams.Status != "" {
+		query = query.Where("status = ?", queryParams.Status)
+	}
+
+	if queryParams.Task != "" {
+		query = query.Where("task LIKE ?", "%"+queryParams.Task+"%")
+	}
+
+	if queryParams.SortBy != "" {
+		order := "asc"
+		if queryParams.SortOrder == "desc" {
+			order = "desc"
+		}
+		query = query.Order(queryParams.SortBy + " " + order)
+	}
+
+	// Execute the query
+	err := query.Find(&todos).Error
 	if err != nil {
 		return nil, err
 	}
+
 	return todos, nil
 }
